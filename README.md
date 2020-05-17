@@ -129,6 +129,14 @@ meu-querido-prometheus-prometheus-node-exporter-kwl7f       1/1     Running   1 
 prometheus-meu-querido-prometheus-pro-prometheus-0          3/3     Running   4          87m
 ```
 
+## Próximos passos
+
+Para inserir novos aplicativos assim como os que foram inseridos no passo 2, basta deixar todas as roles comentadas e inserir apenas as novas referente as novas aplicações e executaro o comando
+
+```
+vagrant provision
+```
+
 ## Complemento
 
 Pode-se fazer isto de outra forma, utilizado o arquivo hosts, que é comum na utilização do ansible.
