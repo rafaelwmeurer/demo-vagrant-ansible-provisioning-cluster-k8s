@@ -131,4 +131,4 @@ prometheus-meu-querido-prometheus-pro-prometheus-0          3/3     Running   4 
 
 ## Complemento
 
-Pode-se fazer isto de outra forma, utilizado o arquivo hosts, que é comum na utilização do ansible, porém utilizei o vagrant desta forma, sem misturar formas de execução.
+Pode-se fazer isto de outra forma, utilizado o arquivo hosts, que é comum na utilização do ansible.
