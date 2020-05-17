@@ -67,6 +67,13 @@ k8s-workers-2   Ready    <none>   80m   v1.18.2
 
 É necessário alterar novamente o arquivo roles/main.yml
 
+Comente as roles:
+- install-docker
+- install-k8s
+- create-cluster
+- join-workers
+- install-helm
+
 ```
   #roles:
   # - { role: install-docker, tags: ["install_docker_role"] }
