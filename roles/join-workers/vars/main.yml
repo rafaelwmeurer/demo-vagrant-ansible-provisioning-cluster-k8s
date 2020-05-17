@@ -1,0 +1,4 @@
+---
+# vars file for join-workers
+K8S_MASTER_NODE_IP: 192.168.12.10
+K8S_API_SECURE_PORT: 6443

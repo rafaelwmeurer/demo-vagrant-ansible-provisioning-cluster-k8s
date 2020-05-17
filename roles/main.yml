@@ -1,0 +1,53 @@
+---
+- hosts: all
+  become: yes
+  remote_user: vagrant
+  gather_facts: no
+  pre_tasks:
+
+    - name: 'Atualizando o repo'
+      raw: 'apt-get update'
+    - name: 'Instalando Pyhton'
+      raw: 'apt-get install -y python'
+    - name: 'Instalando Pyhton3'
+      raw: 'apt-get install -y python3'
+
+  roles:
+    - { role: install-docker, tags: ["install_docker_role"] }   
+    - { role: install-k8s, tags: ["install_k8s_role"] }   
+
+- hosts: k8s-master
+  become: yes
+  user: vagrant
+  roles:
+  - { role: create-cluster, tags: ["create_cluster_role"] }   
+
+- hosts: k8s-workers
+  become: yes
+  user: vagrant
+  roles:
+  - { role: join-workers, tags: ["join_cluster_role"] }
+
+- hosts: k8s-master
+  become: yes
+  user: vagrant
+  roles:
+  - { role: install-helm, tags: ["install_helm_role"] }
+
+- hosts: k8s-master
+  become: yes
+  user: vagrant
+  roles:
+  - { role: install-monit-tools, tags: ["install_monit-tools"] }
+
+- hosts: k8s-master
+  become: yes
+  user: vagrant
+  roles:
+  - { role: deploy-app-v1, tags: ["deploy_app_v1_role"] }
+
+- hosts: k8s-master
+  become: yes
+  user: vagrant
+  roles:
+  - { role: deploy-app-v2, tags: ["deploy_app_v2_role"] }

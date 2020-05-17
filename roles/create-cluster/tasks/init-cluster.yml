@@ -1,0 +1,36 @@
+- name: Removendo cluster antigo
+  command:
+    kubeadm reset --force
+  register: kubeadm_reset
+
+- name: Inicializando o cluster k8s
+  command: 
+    kubeadm init --apiserver-advertise-address="192.168.12.10" --apiserver-cert-extra-sans="192.168.12.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
+  register: kubeadm_init
+
+- name: Criando o diretorio .kube
+  file:
+    path: ~/.kube
+    state: directory
+
+- name: Linkando o arquivo admin.conf para o ~/.kube/config
+  file:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/config
+    state: link
+
+- name: Configurando o pod network Weavenet
+  shell: kubectl apply -f {{ default_url_weavenet }}
+  register: weavenet_result
+
+- name: Generate join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+
+- name: Copy join command to local file
+  become: false
+  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+
+- name: CA Hash
+  shell: openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: k8s_master_ca_hash

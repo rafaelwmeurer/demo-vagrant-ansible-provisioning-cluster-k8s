@@ -1,0 +1,8 @@
+- name: instalando o docker
+  shell: curl -fsSl https://get.docker.com | bash
+  notify: Restart Docker
+
+- name: adicionado usuário vagrant no grupo docker
+  user:
+    name: vagrant
+    group: docker

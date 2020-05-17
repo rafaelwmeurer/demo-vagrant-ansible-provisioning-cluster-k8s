@@ -1,0 +1,27 @@
+#- name: Configure node-ip {{ node_ip }} at kubelet
+#  lineinfile:
+#    path: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
+#    line: 'Environment="KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}"'
+#    regexp: 'KUBELET_EXTRA_ARGS='
+#    insertafter: '\[Service\]'
+#    state: present
+
+- name: Adicionando as chaves do repo apt do k8s
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Adicionando o repositório do k8s
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+
+- name: Instalando os pacotes kubeadm kubenet kubectl
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+  notify: Restart Kubelet
